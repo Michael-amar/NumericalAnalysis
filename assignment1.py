@@ -6,19 +6,6 @@ import numpy as np
 import time
 import random
 
-def euclidean_distance(x1:float,y1:float,x2:float,y2:float):
-    # return ((P1[0]-P2[0])**2 + (P1[1]-P2[1])**2) ** 0.5
-    print (y1)
-    print (y2)
-    x = ((x1-x2)**2)
-    y = ((y1-y2)**2)
-    z = x + y
-    return z**0.5
-    # return (((x1-x2)**2) + ((y1-y2)**2)) ** 0.5
-
-def inverse(m:torch.tensor):
-    m.inverse()
-
 #gets initial guesses for bisection and regula falsi
 #e.g finds a,b such that f(a)*f(b) < 0
 #the guesses are within range [0,1] , i can assume that because when solving the t cubic t is between 0,1
@@ -35,7 +22,7 @@ def get_initial_guesses(f: callable):
         if f(pos) * f(neg) < 0:
             break
         current+= step
-        if current >= 1.0:
+        if current > 1.01:
             current = 0 
             step = step/10
     return pos,neg
@@ -83,6 +70,7 @@ class Assignment1:
                 2*C[i*2+1] - C[i*2],
                 C[i*2+2],
                 C[i*2+3],])
+            print(Ci)
             splinesRange[i] = [C[i*2+1][0],C[i*2+3][0]]
 
 
@@ -108,11 +96,11 @@ class Assignment1:
             x1,y1 = 2*C[spline_index*2+1] - C[spline_index*2]
             x2,y2 = C[spline_index*2+2]
             x3,y3 = C[spline_index*2+3]
-            find_t = lambda x_ : (lambda t : ((1-t)**3 * x0) + (3*(1-t)**2 * t * x1) + (3*(1-t) * (t**2) * x2) + ((t**3) * x3) - x_ )
+            find_t = lambda x : (lambda t : ((1-t)**3 * x0) + (3*(1-t)**2 * t * x1) + (3*(1-t) * (t**2) * x2) + ((t**3) * x3) - x )
             calc_y = lambda t: (((1-t)**3) * y0) + (3*((1-t)**2) * t * y1) + (3*(1-t) * (t**2) * y2) + ((t**3) * y3)
             t_cubic = find_t(x)
             pos,neg = get_initial_guesses(t_cubic)
-            desired_t = bisection(t_cubic,pos,neg,0.0000000001)
+            desired_t = bisection(t_cubic,pos,neg,0.000001)
             return float(calc_y(desired_t))
 
         return find_y
@@ -169,14 +157,14 @@ class TestAssignment1(unittest.TestCase):
 
 if __name__ == "__main__":
     ass1 = Assignment1()
-    f = lambda x : (x**2)-(3*x)+5 
+    f = lambda x : np.sin(x)
     
-    interpolated = ass1.interpolate(f,1,100,100)
-    for i in range (2,100):
+    interpolated = ass1.interpolate(f,1,100,10)
+    for i in range (12,100):
         original = float(f(i))
-        interpolateddd = float(interpolated(i))
+        interpolateddd = interpolated(i)
         err = 1000000
         if type(interpolateddd) != str :   
-            err = (abs(original - interpolateddd))/original
+            err = abs((original - interpolateddd)/original)
         print("original " + str(i) + ":" , original , "interpolated :" , interpolateddd , " relative error = " , err)
     # unittest.main()

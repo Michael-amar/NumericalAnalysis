@@ -237,25 +237,25 @@ class TestAssignment3(unittest.TestCase):
     def test_integrate_hard_case(self):
         ass3 = Assignment3()
         f1 = strong_oscilations()
-        r = ass3.integrate(f1, 0.09, 10, 2000)
+        r = ass3.integrate(f1, 0.09, 10, 100000)
         print("res:",r)
         true_result = -7.78662 * 10 ** 33
         print("true:",true_result)
         self.assertGreaterEqual(0.001, abs((r - true_result) / true_result))
 
 if __name__ == "__main__":
-    # unittest.main()
-    # f = lambda x: (x**3) - (42*(x**2)) + (38*x) - 5
-    # simpson_x = simpsonsX(f,0.3,47.2)
-    # simpsons_x_comp = composite_simpsonX(f,0.3,47.2,5)
-    # print ("simpson_x" , simpson_x)
-    # print ("simpsons_x_comp" , simpsons_x_comp)
-    # f = lambda x: np.arctan(x)
-    f1 = lambda x: x
-    f2 = lambda x: 100 - (2*(x**2)) + ((x-6)**3)
-    ass3 = Assignment3()
-    # ass2 = Assignment2()
-    # print(ass2.intersections(f1,f2,1,100,0.001))
-    # print(ass3.integrate(lambda x : f2(x)-f1(x) , ))
-    print(ass3.areabetween(f1,f2))
-    # print(simpsonsX(f,1,100))
+    unittest.main()
+    # # f = lambda x: (x**3) - (42*(x**2)) + (38*x) - 5
+    # # simpson_x = simpsonsX(f,0.3,47.2)
+    # # simpsons_x_comp = composite_simpsonX(f,0.3,47.2,5)
+    # # print ("simpson_x" , simpson_x)
+    # # print ("simpsons_x_comp" , simpsons_x_comp)
+    # # f = lambda x: np.arctan(x)
+    # f1 = lambda x: x
+    # f2 = lambda x: 100 - (2*(x**2)) + ((x-6)**3)
+    # ass3 = Assignment3()
+    # # ass2 = Assignment2()
+    # # print(ass2.intersections(f1,f2,1,100,0.001))
+    # # print(ass3.integrate(lambda x : f2(x)-f1(x) , ))
+    # print(ass3.areabetween(f1,f2))
+    # # print(simpsonsX(f,1,100))

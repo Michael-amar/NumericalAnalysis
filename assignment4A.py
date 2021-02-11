@@ -20,16 +20,11 @@ for solving this assignment.
 import numpy as np
 import time
 import random
-
+import torch
 
 class Assignment4A:
     def __init__(self):
-        """
-        Here goes any one time calculation that need to be made before 
-        solving the assignment for specific functions. 
-        """
-
-        pass
+        self.n = 2
 
     def fit(self, f: callable, a: float, b: float, d:int, maxtime: float) -> callable:
         """
@@ -53,12 +48,40 @@ class Assignment4A:
         -------
         a function:float->float that fits f between a and b
         """
+        initial_time = time.time()
 
-        # replace these lines with your solution
-        result = lambda x: x
-        y = f(1)
+        x = np.random.uniform(a,b,self.n)
+        y = np.array([f(xi) for xi in x])
 
-        return result
+        sum_x_powers = np.array([0] * (2*d+1),dtype=np.float64)
+        sum_x_powers[0]=self.n
+        for i in range (1,(d*2)+1):
+            sum_x_powers[i] = np.sum(x**i)
+
+        Q = torch.zeros((d+1,d+1),dtype=torch.float64)
+        for i in range (0,d+1):
+            for j in range (0,d+1):
+                Q[i][j] = sum_x_powers[i+j]
+        Qinv = Q.inverse()
+        
+        Y = torch.empty((d+1,1),dtype=torch.float64)
+        for i in range(0,d+1):
+            Y[i][0] = np.sum(y*(x**i))
+
+        A = torch.flip(Qinv.mm(Y),[0])
+
+        end_time = time.time()
+        running_time = end_time-initial_time
+        time_per_sample = running_time/self.n
+        time_left = maxtime - running_time
+
+        if (self.n*2) * time_per_sample < time_left:
+            self.n = (self.n *2)
+            return self.fit(f,a,b,d,time_left)
+
+        else:
+            self.n = 2
+            return np.poly1d(A.T[0])
 
 
 ##########################################################################
@@ -108,4 +131,9 @@ class TestAssignment4(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    unittest.main()
+    ass4 = Assignment4A()
+    f = lambda x : 3*(x**3)-(x**2)
+    initial = time.time()
+    print(ass4.fit(f,0 ,20,3,1))
+    # print(time.time() - initial)
+    #unittest.main()

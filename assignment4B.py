@@ -40,7 +40,7 @@ class Assignment4:
 
         pass
 
-    def area(contour: callable, maxerr=0.001)->np.float32:
+    def area(self, contour: callable, maxerr=0.001)->np.float32:
         """
         Compute the area of the shape with the given contour. 
 
@@ -134,6 +134,15 @@ class TestAssignment4(unittest.TestCase):
         a = shape.area()
         self.assertLess(abs(a - np.pi), 0.01)
         self.assertLessEqual(T, 32)
+
+    def test_circle_area_from_contour(self):
+        circ = Circle(cx=1, cy=1, radius=1, noise=0.0)
+        ass4 = Assignment4()
+        T = time.time()
+        a_computed = ass4.area(contour=circ.contour, maxerr=0.1)
+        T = time.time() - T
+        a_true = circ.area()
+        self.assertLess(abs((a_true - a_computed)/a_true), 0.1)
 
 
 if __name__ == "__main__":

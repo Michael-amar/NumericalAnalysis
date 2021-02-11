@@ -156,9 +156,9 @@ class TestAssignment1(unittest.TestCase):
 
 if __name__ == "__main__":
     # ass1 = Assignment1()
-    # f = lambda x : 5
+    # f = lambda x : np.sin(x)
     
-    # interpolated = ass1.interpolate(f,1,100,10)
+    # interpolated = ass1.interpolate(f,1,100,100)
     # for i in range (0,100):
     #     original = float(f(i))
     #     interpolateddd = interpolated(i)

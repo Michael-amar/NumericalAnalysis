@@ -134,6 +134,6 @@ if __name__ == "__main__":
     ass4 = Assignment4A()
     f = lambda x : 3*(x**3)-(x**2)
     initial = time.time()
-    print(ass4.fit(f,0 ,20,3,1))
+    print(ass4.fit(f,0 ,20,1,1))
     # print(time.time() - initial)
     #unittest.main()

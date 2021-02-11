@@ -56,7 +56,7 @@ def simpsonsX(f,a,b):
 def composite_simpsonX(f,a,b,n):
     #Note: cant take more than n samples
     h = (b-a)/(n-1)
-    if n%4 == 0 : return np.float32(midpoint(f,a,a+h) + simpsons(f,a+h,a+(3*h)) + composite_simpsonX(f,a+(3*h),b,n-3))
+    if n%4 == 0 : return np.float32(trapezoidal(f,a,a+h) + simpsons(f,a+h,a+(3*h)) + composite_simpsonX(f,a+(3*h),b,n-3))
     elif n%4 == 1:
         F0=f(a)
         F1=0
@@ -82,7 +82,7 @@ def composite_simpson(f,a,b,n):
     #Note: cant take more than n samples
     h = (b-a)/(n-1)
     if n%2 == 0:
-        return np.float32(midpoint(f,a,a+h)+composite_simpson(f,a+h,b,n-1))
+        return np.float32(trapezoidal(f,a,a+h)+composite_simpson(f,a+h,b,n-1))
     else :
         F0 = f(a)
         F1 = 0
@@ -226,9 +226,6 @@ class TestAssignment3(unittest.TestCase):
         print("true:",true_result)
         self.assertGreaterEqual(0.001, abs((r - true_result) / true_result))
 
-
-
-
 if __name__ == "__main__":
     # unittest.main()
     # f = lambda x: (x**3) - (42*(x**2)) + (38*x) - 5
@@ -238,5 +235,5 @@ if __name__ == "__main__":
     # print ("simpsons_x_comp" , simpsons_x_comp)
     f = lambda x: np.arctan(x)
     ass3 = Assignment3()
-    print(ass3.integrate(f,1,100,100))
+    print(ass3.integrate(h,1,100,16))
     # print(simpsonsX(f,1,100))

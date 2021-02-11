@@ -48,14 +48,14 @@ class Assignment2:
             min = b
             max = a
         f = lambda x : (f1(x)-f2(x))
-        n = 10 + (((max-min)//10)*5 )              #longer range ==> more points
+        n = 25 + (((max-min)//10)*15 )              #longer range ==> more points
         initial_guess = np.linspace(min,max,n)
         for i in range (0,n):
             try:
                 root = NewtonRaphson(f,initial_guess[i],maxerr,timeout=1.5)
                 if type(root) != str :
                     if min <= root <= max:
-                        if not includes_point(roots,root,0.005):
+                        if not includes_point(roots,root,0.05):
                             roots.append(root)
             except Exception:
                 pass
@@ -96,10 +96,10 @@ if __name__ == "__main__":
     # f = lambda x : (x**3) + (2*(x**2)) -0.5
     # print(NewtonRaphson(f,0.5,0.001,timeout=10))
 
-    f1 = lambda x: (x**20) + (x**19) - (x**17) + (x**4) - (2*(x**2)) + 0.5
-    f2 = lambda x: 0
-    ass2=Assignment2()
-    print(ass2.intersections(f1,f2,-5,10,0.001))
+    # f1 = lambda x: 1-(2*(x**2))+(x**3)
+    # f2 = lambda x: x
+    # ass2=Assignment2()
+    # print(ass2.intersections(f1,f2,-5,100,0.001))
 
-    # unittest.main()
+    unittest.main()
 

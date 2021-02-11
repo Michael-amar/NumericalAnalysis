@@ -19,7 +19,7 @@ This assignment is more complicated than Assignment1 and Assignment2 because:
 import numpy as np
 import time
 import random
-
+from assignment2 import *
 def midpoint(f,a,b):
     # Note: cant take more than 1 sample
     h = b - a
@@ -193,12 +193,29 @@ class Assignment3:
             The area between function and the X axis
 
         """
-
-        # replace this line with your solution
-        result = np.float32(1.0)
-
-        return result
-
+        a=1
+        b=100
+        sum = 0 
+        ass2 = Assignment2()
+        intersections = ass2.intersections(f1,f2,a,b,0.001)
+        intersections = sorted(intersections)
+        if len(intersections) < 2:
+            #failed to find intersections
+            #return integral of f1-f2 in the range [a,b]
+            #just to return something...
+            f = lambda x : f1(x)-f2(x)
+            return self.integrate(f,a,b,25)
+        else :
+            for i in range (0,len(intersections)-1):
+                low = intersections[i]
+                high = intersections[i+1]
+                num_in_range = low + (high-low)/2
+                if f1(num_in_range) > f2(num_in_range):
+                    f = lambda x : f1(x)-f2(x)
+                else :
+                    f = lambda x : f2(x)-f1(x)
+                sum +=abs(self.integrate(f,low,high,500))
+        return sum
 
 ##########################################################################
 
@@ -220,7 +237,7 @@ class TestAssignment3(unittest.TestCase):
     def test_integrate_hard_case(self):
         ass3 = Assignment3()
         f1 = strong_oscilations()
-        r = ass3.integrate(f1, 0.09, 10, 100000)
+        r = ass3.integrate(f1, 0.09, 10, 2000)
         print("res:",r)
         true_result = -7.78662 * 10 ** 33
         print("true:",true_result)
@@ -233,7 +250,12 @@ if __name__ == "__main__":
     # simpsons_x_comp = composite_simpsonX(f,0.3,47.2,5)
     # print ("simpson_x" , simpson_x)
     # print ("simpsons_x_comp" , simpsons_x_comp)
-    f = lambda x: np.arctan(x)
+    # f = lambda x: np.arctan(x)
+    f1 = lambda x: x
+    f2 = lambda x: 100 - (2*(x**2)) + ((x-6)**3)
     ass3 = Assignment3()
-    print(ass3.integrate(h,1,100,16))
+    # ass2 = Assignment2()
+    # print(ass2.intersections(f1,f2,1,100,0.001))
+    # print(ass3.integrate(lambda x : f2(x)-f1(x) , ))
+    print(ass3.areabetween(f1,f2))
     # print(simpsonsX(f,1,100))

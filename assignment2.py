@@ -96,10 +96,10 @@ if __name__ == "__main__":
     # f = lambda x : (x**3) + (2*(x**2)) -0.5
     # print(NewtonRaphson(f,0.5,0.001,timeout=10))
 
-    # f1 = lambda x: (x**3) + (2*(x**2)) -0.5
-    # f2 = lambda x: 0
-    # ass2=Assignment2()
-    # print(ass2.intersections(f1,f2,-5,10,0.001))
+    f1 = lambda x: (x**20) + (x**19) - (x**17) + (x**4) - (2*(x**2)) + 0.5
+    f2 = lambda x: 0
+    ass2=Assignment2()
+    print(ass2.intersections(f1,f2,-5,10,0.001))
 
-     unittest.main()
+    # unittest.main()
 

@@ -17,7 +17,10 @@ class Assignment1:
         pass
 
     def interpolate(self, f: callable, a: float, b: float, n: int) -> callable:
-        
+        if n == 1:
+            const = f(a+((b-a)/2))
+            return lambda x : const
+
         def search_spline(x,splinesRange,nsplines):
             for i in range(0,nsplines):
                 if splinesRange[i][0] <= x and splinesRange[i][1] >= x:

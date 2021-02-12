@@ -20,6 +20,8 @@ get (x,y) points from the given shape by calling sample().
 """
 
 import numpy as np
+import torch
+import matplotlib.pyplot as plt
 import time
 import random
 from functionUtils import AbstractShape
@@ -33,12 +35,8 @@ class MyShape(AbstractShape):
 
 class Assignment4:
     def __init__(self):
-        """
-        Here goes any one time calculation that need to be made before 
-        solving the assignment for specific functions. 
-        """
-
-        pass
+        self.n = 100
+        self.prevsum = -100
 
     def area(self, contour: callable, maxerr=0.001)->np.float32:
         """
@@ -56,8 +54,30 @@ class Assignment4:
         The area of the shape.
 
         """
-        return np.float32(1.0)
+        pts = torch.Tensor(contour(self.n))
+        new_sum = 0
+
+        if pts[0][0] < pts[1][0]: direction = 1
+        else : direction = -1
+        for i in range (0,self.n-1):
+            base1 = pts[i][1]
+            base2= pts[i+1][1]
+            h = (pts[i+1][0]- pts[i][0])* direction
+            new_sum += (base1+base2)*(h/2)
+        
+        if new_sum - self.prevsum  > maxerr :
+            self.prevsum = new_sum
+            self.n = self.n*2
+            return self.area(contour,maxerr)
+        
+        else :  
+            self.prevsum = -100
+            self.n = 100
+            return np.float32(abs(new_sum))
     
+
+
+
     def fit_shape(self, sample: callable, maxtime: float) -> AbstractShape:
         """
         Build a function that accurately fits the noisy data points sampled from

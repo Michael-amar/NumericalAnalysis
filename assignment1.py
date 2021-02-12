@@ -17,15 +17,17 @@ class Assignment1:
         pass
 
     def interpolate(self, f: callable, a: float, b: float, n: int) -> callable:
-        if n == 1:
-            const = f(a+((b-a)/2))
-            return lambda x : const
+        
 
         def search_spline(x,splinesRange,nsplines):
             for i in range(0,nsplines):
                 if splinesRange[i][0] <= x and splinesRange[i][1] >= x:
                     return i
             return -1
+
+        if n == 1:
+            const = f(a+((b-a)/2))
+            return lambda x : const
 
         nsplines = (n-2)//2
         P = (list(map(lambda x : [x,f(x)] , np.linspace(a,b,(nsplines*2+2)))))
@@ -59,6 +61,7 @@ class Assignment1:
             else:
                 desired_t = np.real(roots[0])
                 return float(calc_y(desired_t))
+                
         return find_y
 
 
